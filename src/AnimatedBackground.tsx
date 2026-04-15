@@ -22,15 +22,13 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ enabled }) => {
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     if (!ctx) return;
 
-    // --- INSTÄLLNINGAR ---
     const config: LightningConfig = {
-      bpm: 60,
+      bpm: 20,
       amplitude: 1.0,
       stayDuration: 800,
       fadeSpeed: 0.02,
-      ambientIntensity: 0.05,
+      ambientIntensity: 0.01,
     };
-    // ---------------------
 
     let opacity = 0;
     let isStaying = false;
@@ -38,9 +36,6 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ enabled }) => {
     let nextStrikeTime = 0;
     let currentBolt: { x: number; y: number }[] = [];
     let animationFrameId: number;
-
-    // Använd en lokal variabel istället för useState för att undvika infinite loops!
-    let staticBoltData: { x: number; y: number }[] | null = null;
 
     const createBolt = (
       x1: number,
@@ -89,61 +84,19 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ enabled }) => {
       ctx.stroke();
     };
 
-    const generateStaticBolt = (width: number, height: number) => {
-      const startY = height * 0.5;
-      const endY = startY + (Math.random() - 0.5) * 100;
-      staticBoltData = createBolt(
-        0,
-        startY,
-        width,
-        endY,
-        200 * config.amplitude,
-      );
-    };
-
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-
-      if (!enabled) {
-        generateStaticBolt(canvas.width, canvas.height);
-      }
     };
 
     window.addEventListener("resize", resize);
     resize();
 
+    // The Main animation loop
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       if (!enabled) {
-        const gradient = ctx.createRadialGradient(
-          canvas.width / 2,
-          canvas.height / 2,
-          0,
-          canvas.width / 2,
-          canvas.height / 2,
-          canvas.width,
-        );
-        gradient.addColorStop(0, "rgba(249, 115, 22, 0.03)");
-        gradient.addColorStop(1, "transparent");
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        if (!staticBoltData) {
-          generateStaticBolt(canvas.width, canvas.height);
-        }
-
-        if (staticBoltData) {
-          drawBoltPath(staticBoltData, 0.4, false);
-        }
-
-        return; // Viktigt: Vi stannar här när effekten är avstängd
-      }
-
-      // Rensa den statiska blixten när animationen slås på igen
-      if (staticBoltData) {
-        staticBoltData = null;
+        return;
       }
 
       const now = Date.now();
@@ -198,7 +151,6 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ enabled }) => {
           drawBoltPath(currentBolt, currentOpacity, isStaying);
         }
       }
-
       animationFrameId = requestAnimationFrame(draw);
     };
 
@@ -208,10 +160,10 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ enabled }) => {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [enabled]); // <-- Endast "enabled" är en dependency nu!
+  }, [enabled]);
 
   return (
-    <div className="fixed inset-0 w-full h-full -z-50 bg-neutral-950 overflow-hidden pointer-events-none">
+    <div className="fixed inset-0 w-full h-full -z-50 bg-neutral-950 backdrop-blur-sm overflow-hidden pointer-events-none">
       <canvas ref={canvasRef} className="w-full h-full" />
     </div>
   );
