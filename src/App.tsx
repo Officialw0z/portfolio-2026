@@ -81,7 +81,7 @@ const skills = [
 ];
 
 const App: React.FC = () => {
-  const [isLightningEnabled, setIsLightningEnabled] = useState(true);
+  const [isLightningEnabled, setIsLightningEnabled] = useState(false);
 
   return (
     <div className="min-h-screen bg-transparent text-neutral-300 selection:bg-orange-500/30 font-sans scroll-smooth relative">
