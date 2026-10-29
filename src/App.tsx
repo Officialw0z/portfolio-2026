@@ -3,7 +3,7 @@ import AnimatedBackground from "./AnimatedBackground";
 
 // Image imports
 import cashcurveImg from "./images/cashcurve.png";
-import yumyumImg from "./images/yumyum.png";
+import orvetImg from "./images/orvet.png";
 import profileImg from "./images/profile.png";
 import jonkenskaningardImg from "./images/jonkenskaningard.png";
 
@@ -52,19 +52,19 @@ const projects: Project[] = [
     imageClass: "aspect-video object-cover object-top",
   },
   {
-    title: "YumYum",
-    role: "Frontendutvecklare",
+    title: "Orvet",
+    role: "Webbutvecklare och spelutvecklare",
     description:
-      "En modern plattform för matbeställning med fokus på ett tydligt gränssnitt och smidig hantering av API:er.",
+      "Hemsida och wiki för ett onlinespel som jag utvecklar tillsammans med en vän i Godot, med nedladdning, patch notes, highscore och sökbar spelinformation.",
     deepDive:
-      "Här låg fokus på att bygga ett intuitivt flöde för användaren att söka och filtrera recept från externa källor. Utmaningen var att strukturera den asynkrona datan på ett logiskt sätt i applikationen.",
+      "Wikin byggs automatiskt från spelets egna dataexporter, så monster, items, klasser och droppar uppdateras när speldatan ändras. Allt valideras med Zod vid bygget, vilket stoppar trasig data innan den publiceras. Sidan har sorterbara tabeller, en egen sökfunktion och en highscore som hämtas levande från servern.",
     techChoices:
-      "Jag använde Redux Toolkit för att hantera applikationens globala tillstånd och Sass för att skapa en strukturerad och underhållsvänlig styling av komponenterna.",
-    tags: ["React", "Redux Toolkit", "API", "Sass"],
-    link: "https://yumyum-two.vercel.app/",
-    image: yumyumImg,
-    status: "Live",
-    imageClass: "h-[400px] w-full object-cover object-top",
+      "Valde Next.js med statisk export och TypeScript i strikt läge, utan någon användning av any, för snabba sidor, bra SEO och minimalt underhåll. Patch notes skrivs som MDX-filer i repot, och GitHub Actions bygger projektet och skickar nya patch notes till Discord automatiskt.",
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Zod", "Godot"],
+    link: "https://orvet.netlify.app",
+    image: orvetImg,
+    status: "In Progress",
+    imageClass: "aspect-video object-cover object-top",
   },
 ];
 
